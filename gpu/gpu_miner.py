@@ -10,7 +10,7 @@ import logging
 from common.block import Block
 
 class gpu_miner:
-    def __init__(self, logger):
+    def __init__(self, logger, difficulty):
         self.logger = logger
         try:
             #platform = cl.get_platforms()[0]
@@ -42,7 +42,7 @@ class gpu_miner:
 
             self.blocks = np.zeros(self.data_info[0] * self.globalThreads, np.uint8)
 
-            self.difficulty = 2**11
+            self.difficulty = difficulty
 
             self.logger.info("HERE")
 

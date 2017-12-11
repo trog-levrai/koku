@@ -32,6 +32,15 @@ def getInitTransactions(vk, sk):
     #We don't sign it bc no signature is needed
     return [tr]
 
+def getDifficulty(chain):
+    #if len(chain) < 2:
+    #    return 2**11
+    #delta = chain[-1].getTime() - chain[-2].getTime()
+    #prevDifficulty = chain[-1].getDifficulty()
+    #return int((delta / prevDifficulty) * 60.)
+    return 2**11
+
+
 def main():
 
     try:
@@ -46,7 +55,7 @@ def main():
         logger.error(type(inst))
         logger.error((inst.args))
 
-    miner = gpu_miner(logger)
+    miner = gpu_miner(logger, getDifficulty(chain))
     net = KokuNetwork(KokuNetworkPeerType.MINER, logger, chain, miner)
     #time.sleep(3)
     net.broadcastMessage(KokuMessageType.GET_ADDR, [])
