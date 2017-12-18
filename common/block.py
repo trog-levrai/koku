@@ -14,6 +14,8 @@ class Block:
         self.id = idBlock
         self.bits = 20
         self.pad = 0
+        self.difficulty = 2**11
+        self.time = int(time.time())
         self.transactions = []
 
     #Sets the transactions list of this block.
@@ -45,7 +47,7 @@ class Block:
         return (last, total)
 
     def getPack(self):
-        return struct.pack('32s32s3I', self.prev, self.root, self.id, self.bits, self.pad)
+        return struct.pack('32s32s5I', self.prev, self.root, self.id, self.bits, self.pad, self.time, self.difficulty)
 
     def unpack(self, buff):
         self.prev, data = struct.unpack('32s', buff[:32])[0], buff[32:]
@@ -59,6 +61,18 @@ class Block:
         m = hashlib.sha256()
         m.update(self.getPack())
         return m.digest()
+
+    def setDifficulty(self, difficulty):
+        self.difficulty = difficulty
+
+    def getDifficulty(self):
+        return self.difficulty
+
+    def getTime(self):
+        return self.time()
+
+    def updateTime(self):
+        self.time = int(time.time())
 
 def checkChain(chain):
     prev = None
