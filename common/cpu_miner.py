@@ -1,21 +1,20 @@
 from multiprocess import Pool
+import logging
 import hashlib
 import block
 
 class cpu_miner:
 
-    def __init__(self, block, difficulty):
-        self.block = block
-        self.block.setDifficulty(difficulty)
+    def __init__(self, logger):
         self.bach = 2**20
         self.mining = True
 
-    def stop_mining(self):
-        self.mining = False
+    def set_block(self, block):
+        self.block = block
 
     def mine(self):
         i = 0
-        while self.mining:
+        while True:
             block.updateTime()
             with Pool(None) as p:
                 val = p.map((block, x) for x in range(i * self.batch, (i + 1) * self.batch))

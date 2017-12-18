@@ -77,6 +77,7 @@ def main():
             transactions = getInitTransactions(vk, sk)
             newBlock = Block(chain[-1].getHash(), b'', len(chain))
             newBlock.setTransactions(transactions)
+            newBlock.setDifficulty(getDifficulty(chain))
 
             miner.set_block(newBlock)
             nounce, fresh = miner.compute_hashes()
