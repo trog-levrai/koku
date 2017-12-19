@@ -56,7 +56,7 @@ def main():
         logger.error(type(inst))
         logger.error((inst.args))
 
-    miner = gpu_miner(logger, getDifficulty(chain))
+    miner = cpu_miner(logger)
     net = KokuNetwork(KokuNetworkPeerType.MINER, logger, chain, miner)
     #time.sleep(3)
     net.broadcastMessage(KokuMessageType.GET_ADDR, [])
