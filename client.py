@@ -48,7 +48,7 @@ if __name__ == "__main__":
                 logger.addHandler(fh)
 
                 net = KokuNetwork('client', logger, chain, None)
-                net.broadcastMessage(KokuMessageType.GET_FROM_LAST, chain[-1].id)
+                net.broadcastMessage(KokuMessageType.GET_FROM_LAST, chain)
                 net.broadcastMessage(KokuMessageType.GET_TRANSACTION, [])
 
                 net.waiting_for_transactions = True

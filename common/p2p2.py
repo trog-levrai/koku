@@ -2,9 +2,7 @@ import logging
 import socket
 import _thread as thread
 import time
-import sys
 import pickle
-from common.block import Block
 from enum import Enum
 
 class KokuNetworkPeerType(Enum):
@@ -144,6 +142,7 @@ class KokuNetwork():
             if msgType == KokuMessageType.FROM_LAST:
                 self.logging.info("FROM LAST")
                 chainFromLast = kokuStruct.data
+                self.logging.info('Block chain len ' + str(len(self.chain)) + 'received ' + str(len(chainFromLast)))
                 if len(chainFromLast) > 0 and len(chainFromLast) > len(self.chain):
                   self.chain = chainFromLast
                   with open('/tmp/.koku.chain', 'wb') as f:
@@ -162,7 +161,7 @@ class KokuNetwork():
                         self.broadcastMessage(KokuMessageType.FROM_LAST, [])
                         self.broadcastMessage(KokuMessageType.GET_FROM_LAST, len(self.chain))
                     else:
-                        self.broadcastMessage(KokuMessageType.FROM_LAST, self.chain[:])
+                        self.broadcastMessage(KokuMessageType.FROM_LAST, self.chain)
                 if msgType == KokuMessageType.FROM_LAST:
                     chainFromLast = kokuStruct.data
                     if len(chainFromLast) > 0 and len(chainFromLast) > len(self.chain):
