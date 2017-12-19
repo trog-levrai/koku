@@ -40,11 +40,6 @@ def getInitTransactions(vk, sk):
 
 def getDifficulty(chain):
     return 2**11
-    if len(chain) < 2:
-        return 2 ** 11
-    delta = chain[-1].getTime() - chain[-2].getTime()
-    prevDifficulty = chain[-1].getDifficulty()
-    return int((prevDifficulty / delta) * 60.)
 
 
 def main():
