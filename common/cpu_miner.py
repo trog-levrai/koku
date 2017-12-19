@@ -19,13 +19,16 @@ class cpu_miner:
         self.not_interrupted = False
         self.logging.info('Interrupted batch')
 
-    def compute_hashes(self):
+    def compute_hashes(self, net):
         i = 0
         while self.not_interrupted:
             self.logging.info('Starting batch ' + str(i))
             self.block.updateTime()
             with Pool(None) as p:
                 val = p.map(try_pad, [(copy(self.block), x) for x in range(i * self.batch, (i + 1) * self.batch)])
+                if net.getInteruptMiner():
+                    self.interrupt()
+                    return (self.block, False)
 
                 for j, v in enumerate(val):
                     if v < self.block.difficulty:

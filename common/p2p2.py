@@ -139,6 +139,16 @@ class KokuNetwork():
         clientsoc.close()
         self.removePeer(clientaddr)
 
+    def interuptMiner(self):
+        self.interupt = True
+
+    def getInteruptMiner(self):
+        self.resetInteruptMiner()
+        return self.interupt
+
+    def resetInteruptMiner(self):
+        self.interupt = False
+
     def handleKokuProtocol(self, data):
         try:
             self.logging.info('--Received data ' + str(data))
@@ -192,7 +202,7 @@ class KokuNetwork():
                 if msgType == KokuMessageType.FROM_LAST:
                     chainFromLast = kokuStruct.data
                     if len(chainFromLast) > 0 and len(chainFromLast) > len(self.chain):
-                        self.miner.interrupt()
+                        self.interuptMiner()
 
         except Exception as inst:
             self.logging.exception('handleKokuProtocol: ')

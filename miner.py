@@ -87,7 +87,7 @@ def main():
 
             miner.set_block(newBlock)
             fresh_chain = net.getFreshBlockChain()
-            nounce, fresh = miner.compute_hashes()
+            nounce, fresh = miner.compute_hashes(net)
             if len(fresh_chain) > len(chain):
                 chain = fresh_chain
             else:
