@@ -57,6 +57,7 @@ class KokuNetwork():
         self.logging.info('serveraddr: ' + str(serveraddr[0]) + ':' + str(serveraddr[1]))
         try:
             self.serverSoc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.serverSoc.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self.serverSoc.bind(serveraddr)
             self.serverSoc.listen(5)
             self.myIpAddress = self.__getMyIpAddress()
