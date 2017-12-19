@@ -116,7 +116,7 @@ class KokuNetwork():
 
     def handleKokuProtocol(self, data):
         try:
-            self.logging.info('Received data ' + str(data))
+            self.logging.info('--Received data ' + str(data))
             kokuStruct = pickle.loads(data)
             msgType = kokuStruct.type
             self.logging.info('KokuStruct type : ' + str(kokuStruct.type))

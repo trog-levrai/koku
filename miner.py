@@ -91,7 +91,7 @@ def main():
             if fresh:
                 chain.append(nounce)
                 net.transactions[nounce.id] = nounce.transactions
-                net.broadcastMessage(KokuMessageType.FROM_LAST, [nounce])
+                net.broadcastMessage(KokuMessageType.FROM_LAST, chain)
                 with open('/tmp/.koku.chain', 'wb') as f:
                     dump = pickle.dumps(chain)
                     f.write(dump)
