@@ -45,7 +45,6 @@ def getDifficulty(chain):
     prevDifficulty = chain[-1].getDifficulty()
     return int(prevDifficulty * delta / 15.)
 
-
 def main():
 
     try:
@@ -89,7 +88,7 @@ def main():
             miner.set_block(newBlock)
             fresh_chain = net.getFreshBlockChain()
             nounce, fresh = miner.compute_hashes()
-            if len(fresh_chain) >= len(chain):
+            if len(fresh_chain) > len(chain):
                 chain = fresh_chain
             else:
                 chain.append(nounce)
