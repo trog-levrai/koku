@@ -6,7 +6,8 @@ import common.block
 
 class cpu_miner:
 
-    def __init__(self, logger):
+    def __init__(self, logging):
+        self.logging = logging
         self.batch = 2**20
         self.mining = True
         self.not_interrupted = True
@@ -20,6 +21,7 @@ class cpu_miner:
     def compute_hashes(self):
         i = 0
         while self.not_interrupted:
+            self.logging.info('Starting batch', i)
             self.block.updateTime()
             with Pool(None) as p:
                 val = p.map(try_pad, [(deepcopy(self.block), x) for x in range(i * self.batch, (i + 1) * self.batch)])
