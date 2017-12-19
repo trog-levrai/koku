@@ -89,7 +89,7 @@ class KokuNetwork():
         data = pickle.dumps(koku)
         for client in self.peersSoc.values():
             self.logging.info('Sent data to ' + str(client) + ': ' + str(data))
-            client.sendall(data)
+            self.send_msg(client, data)
 
     def listenPeers(self):
         while 1:
@@ -98,17 +98,18 @@ class KokuNetwork():
           thread.start_new_thread(self.handlePeerInteractions, (clientsoc, clientaddr))
         self.serverSoc.close()
 
+    def send_msg(self, sock, msg):
+        msg = struct.pack('>I', len(msg)) + msg
+        sock.sendall(msg)
+
     def recv_msg(self, sock):
-        # Read message length and unpack it into an integer
         raw_msglen = self.recvall(sock, 4)
         if not raw_msglen:
             return None
         msglen = struct.unpack('>I', raw_msglen)[0]
-        # Read the message data
         return self.recvall(sock, msglen)
 
     def recvall(self, sock, n):
-        # Helper function to recv n bytes or return None if EOF is hit
         data = b''
         while len(data) < n:
             packet = sock.recv(n - len(data))
