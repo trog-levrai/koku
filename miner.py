@@ -15,7 +15,8 @@ from common.p2p2 import KokuNetwork
 from common.p2p2 import KokuMessageType
 from common.p2p2 import KokuNetworkPeerType
 from common.transaction import Transaction
-from gpu.gpu_miner import gpu_miner
+#from gpu.gpu_miner import gpu_miner
+from common.cpu_miner import cpu_miner
 
 pid = "/tmp/koku.pid"
 sk = None

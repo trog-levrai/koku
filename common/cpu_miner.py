@@ -1,7 +1,7 @@
-from multiprocess import Pool
+from multiprocessing import Pool
 import logging
 import hashlib
-import block
+import common.block
 
 class cpu_miner:
 
