@@ -91,6 +91,12 @@ class KokuNetwork():
             self.logging.info('Sent data to ' + str(client) + ': ' + str(data))
             self.send_msg(client, data)
 
+    def getFreshBlockChain(self):
+        return self.chain
+
+    def setBlockChain(self, chain):
+        self.chain = chain
+
     def listenPeers(self):
         while 1:
           clientsoc, clientaddr = self.serverSoc.accept()

@@ -43,7 +43,7 @@ def getDifficulty(chain):
         return 2 ** 11
     delta = chain[-1].getTime() - chain[-2].getTime()
     prevDifficulty = chain[-1].getDifficulty()
-    return int(prevDifficulty * delta / 60.)
+    return int(prevDifficulty * delta / 15.)
 
 
 def main():
@@ -87,8 +87,11 @@ def main():
             logger.info('Difficulty is now ' + str(getDifficulty(chain)))
 
             miner.set_block(newBlock)
+            fresh_chain = net.getFreshBlockChain()
             nounce, fresh = miner.compute_hashes()
-            if fresh:
+            if len(fresh_chain) >= len(chain):
+                chain = fresh_chain
+            else:
                 chain.append(nounce)
                 net.transactions[nounce.id] = nounce.transactions
                 net.broadcastMessage(KokuMessageType.FROM_LAST, chain)
