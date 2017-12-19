@@ -1,5 +1,5 @@
 from multiprocessing import Pool
-from copy import deepcopy
+from copy import copy
 import logging
 import hashlib
 import common.block
@@ -24,19 +24,20 @@ class cpu_miner:
             self.logging.info('Starting batch ' + str(i))
             self.block.updateTime()
             with Pool(None) as p:
-                val = p.map(try_pad, [(deepcopy(self.block), x) for x in range(i * self.batch, (i + 1) * self.batch)])
+                val = p.map(try_pad, [(copy(self.block), x) for x in range(i * self.batch, (i + 1) * self.batch)])
 
                 for j, v in enumerate(val):
                     if v < self.block.difficulty:
-                        return (i * self.batch + j, self.not_interrupted)
+                        self.block.pad = i * self.batch + j
+                        return (self.block, self.not_interrupted)
 
                 i = i+1 if (i+1) * self.batch < 2**32 else 0
 
-        return (0, self.not_interrupted)
+        return (self.block, self.not_interrupted)
 
 def try_pad(arg):
     block, pad = arg
     block.pad = pad
     m = hashlib.sha256(block.getPack()).digest()
-    value = int.from_bytes(m, byteorder='little', signed=False)
+    value = int.from_bytes(m[:4], byteorder='little', signed=False)
     return value

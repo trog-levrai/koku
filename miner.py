@@ -39,7 +39,7 @@ def getDifficulty(chain):
     #delta = chain[-1].getTime() - chain[-2].getTime()
     #prevDifficulty = chain[-1].getDifficulty()
     #return int((delta / prevDifficulty) * 60.)
-    return 2**11
+    return 2**(32 - 21)
 
 
 def main():
@@ -83,6 +83,7 @@ def main():
             miner.set_block(newBlock)
             nounce, fresh = miner.compute_hashes()
             if fresh:
+                logger.info('Block found ' + str(chain[-1].getHash()))
                 chain.append(nounce)
                 net.transactions[nounce.id] = nounce.transactions
                 net.broadcastMessage(KokuMessageType.FROM_LAST, [nounce])
