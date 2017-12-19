@@ -69,7 +69,7 @@ class Block:
         return self.difficulty
 
     def getTime(self):
-        return self.time()
+        return self.time
 
     def updateTime(self):
         self.time = int(time.time())

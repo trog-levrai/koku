@@ -39,12 +39,12 @@ def getInitTransactions(vk, sk):
     return [tr]
 
 def getDifficulty(chain):
-    #if len(chain) < 2:
-    #    return 2**11
-    #delta = chain[-1].getTime() - chain[-2].getTime()
-    #prevDifficulty = chain[-1].getDifficulty()
-    #return int((delta / prevDifficulty) * 60.)
-    return 2**(32 - 21)
+    #return 2**11
+    if len(chain) < 2:
+        return 2 ** 11
+    delta = chain[-1].getTime() - chain[-2].getTime()
+    prevDifficulty = chain[-1].getDifficulty()
+    return int((prevDifficulty / delta) * 60.)
 
 
 def main():
@@ -85,6 +85,7 @@ def main():
             newBlock = Block(chain[-1].getHash(), b'', len(chain))
             newBlock.setTransactions(transactions)
             newBlock.setDifficulty(getDifficulty(chain))
+            logger.info('Difficulty is now ' + str(getDifficulty(chain)))
 
             miner.set_block(newBlock)
             nounce, fresh = miner.compute_hashes()
