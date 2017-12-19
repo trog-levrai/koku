@@ -30,11 +30,11 @@ class cpu_miner:
                 for j, v in enumerate(val):
                     if v < self.block.difficulty:
                         self.block.pad = i * self.batch + j
-                        return (self.block, self.not_interrupted)
+                        return (self.block, True)
 
                 i = i+1 if (i+1) * self.batch < 2**32 else 0
 
-        return (self.block, self.not_interrupted)
+        return (self.block, False)
 
 def try_pad(arg):
     block, pad = arg
