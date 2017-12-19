@@ -66,7 +66,7 @@ def main():
     #time.sleep(3)
     net.broadcastMessage(KokuMessageType.GET_ADDR, [])
     #time.sleep(3)
-    net.broadcastMessage(KokuMessageType.GET_FROM_LAST, chain[-1].id)
+    net.broadcastMessage(KokuMessageType.GET_FROM_LAST, len(chain))
     #J'ai ajouté logging ici pour que le network puisse en faire. C'est dans /tmp/koku.log
     #Ici il faut récupérer pleins de peers, je pense que c'est bon.
     #while not updateChain(net):

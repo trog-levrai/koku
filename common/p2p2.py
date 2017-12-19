@@ -141,6 +141,15 @@ class KokuNetwork():
                 self.broadcastMessage(KokuMessageType.TRANSACTION, self.transactions)
                 self.logging.info("GET_TRANSACTION")
 
+            if msgType == KokuMessageType.FROM_LAST:
+                self.logging.info("FROM LAST")
+                chainFromLast = kokuStruct.data
+                if len(chainFromLast) > 0 and len(chainFromLast) > len(self.chain):
+                  self.chain = chainFromLast
+                  with open('/tmp/.koku.chain', 'wb') as f:
+                      dump = pickle.dumps(self.chain)
+                      f.write(dump)
+
             if self.type == KokuNetworkPeerType.MINER:
                 if msgType == KokuMessageType.ACKNOWLEDGE_TRANSACTION:
                     trans = KokuStruct.data
@@ -148,16 +157,15 @@ class KokuNetwork():
                     self.logging.info("ACKNOWLEDGE_TRANSACTION")
                 if msgType == KokuMessageType.GET_FROM_LAST:
                     self.logging.info("GET FROM LAST")
-                    blockId = kokuStruct.data
-                    self.broadcastMessage(KokuMessageType.FROM_LAST, self.chain[blockId + 1:])
+                    chainLen = kokuStruct.data
+                    if len(self.chain) < chainLen:
+                        self.broadcastMessage(KokuMessageType.FROM_LAST, [])
+                        self.broadcastMessage(KokuMessageType.GET_FROM_LAST, len(self.chain))
+                    else:
+                        self.broadcastMessage(KokuMessageType.FROM_LAST, self.chain[:])
                 if msgType == KokuMessageType.FROM_LAST:
-                    self.logging.info("FROM LAST")
                     chainFromLast = kokuStruct.data
-                    if len(chainFromLast) > 0 and chainFromLast[0].id == self.chain[-1].id + 1:
-                        self.chain += kokuStruct.data
-                        with open('/tmp/.koku.chain', 'wb') as f:
-                            dump = pickle.dumps(self.chain)
-                            f.write(dump)
+                    if len(chainFromLast) > 0 and len(chainFromLast) > len(self.chain):
                         self.miner.interrupt()
 
         except Exception as inst:
