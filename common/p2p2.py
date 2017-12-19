@@ -3,6 +3,7 @@ import socket
 import _thread as thread
 import time
 import pickle
+import struct
 from enum import Enum
 
 class KokuNetworkPeerType(Enum):
@@ -82,13 +83,13 @@ class KokuNetwork():
     def broadcastMessage(self, type, msg):
         if self.serverStatus == 0:
           return
+        koku = KokuStruct()
+        koku.data = msg
+        koku.type = type
+        data = pickle.dumps(koku)
         for client in self.peersSoc.values():
-            koku = KokuStruct()
-            koku.data = msg
-            koku.type = type
-            data = pickle.dumps(koku)
-            self.logging.info('Sent data : ' + str(data))
-            client.send(data)
+            self.logging.info('Sent data to ' + str(client) + ': ' + str(data))
+            client.sendall(data)
 
     def listenPeers(self):
         while 1:
@@ -97,10 +98,29 @@ class KokuNetwork():
           thread.start_new_thread(self.handlePeerInteractions, (clientsoc, clientaddr))
         self.serverSoc.close()
 
+    def recv_msg(self, sock):
+        # Read message length and unpack it into an integer
+        raw_msglen = self.recvall(sock, 4)
+        if not raw_msglen:
+            return None
+        msglen = struct.unpack('>I', raw_msglen)[0]
+        # Read the message data
+        return self.recvall(sock, msglen)
+
+    def recvall(self, sock, n):
+        # Helper function to recv n bytes or return None if EOF is hit
+        data = b''
+        while len(data) < n:
+            packet = sock.recv(n - len(data))
+            if not packet:
+                return None
+            data += packet
+        return data
+
     def handlePeerInteractions(self, clientsoc, clientaddr):
         while 1:
             try:
-                data = clientsoc.recv(self.buffsize)
+                data = self.recv_msg(clientsoc)
                 if not data:
                     continue
                 self.handleKokuProtocol(data)
@@ -177,7 +197,8 @@ class KokuNetwork():
 
     def addPeer(self, peerSoc, peerIp):
         self.knownPeers.add(peerIp)
-        self.peersSoc[peerIp] = peerSoc
+        if not peerIp in self.peersSoc:
+            self.peersSoc[peerIp] = peerSoc
 
     def addPeerAndConnect(self, peerIp, peerPort = 55555):
         self.logging.info('Fetching new peer: ' + peerIp)
