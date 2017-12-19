@@ -5,6 +5,7 @@ import time
 import signal
 import pickle
 import logging
+from base58 import b58encode
 from common.address import *
 from common.block import Block
 from daemonize import Daemonize
@@ -25,6 +26,10 @@ chain = [ Block(b'', b'', 0) ]
 net = None
 logger = None
 miner = None
+
+def print_chain(logger, chain):
+    for i, b in enumerate(chain):
+        logger.info(str(i) + ' : ' + str(b.time) + ' : '  + b58encode(b.getHash()))
 
 def getInitTransactions(vk, sk):
     tr = Transaction(10, 0, getAddr(vk), vk)
@@ -75,6 +80,7 @@ def main():
 
     while True:
         try:
+            print_chain(logger, chain)
             transactions = getInitTransactions(vk, sk)
             newBlock = Block(chain[-1].getHash(), b'', len(chain))
             newBlock.setTransactions(transactions)
@@ -83,7 +89,6 @@ def main():
             miner.set_block(newBlock)
             nounce, fresh = miner.compute_hashes()
             if fresh:
-                logger.info('Block found ' + str(chain[-1].getHash()))
                 chain.append(nounce)
                 net.transactions[nounce.id] = nounce.transactions
                 net.broadcastMessage(KokuMessageType.FROM_LAST, [nounce])
