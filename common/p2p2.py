@@ -207,7 +207,7 @@ class KokuNetwork():
                 if len(chainFromLast) > 0 and len(chainFromLast) > len(self.chain):
                     if self.type == KokuNetworkPeerType.MINER:
                         self.interuptMiner()
-                    if not checkChain(chainFromLast):
+                    if not checkChain(self.logging, chainFromLast):
                         self.logging.info('Invalid chain has been received and droped')
                     else:
                         self.chain = chainFromLast

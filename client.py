@@ -32,11 +32,6 @@ if __name__ == "__main__":
                 print("Your address is:", addr)
             elif int(args.amount) > 0:
                 chain = []
-                if os.path.exists('/tmp/.koku.chain'):
-                    with open('/tmp/.koku.chain', 'rb') as cfile:
-                        chain = pickle.load(cfile)
-                else:
-                    chain = [ Block(b'', b'', 0) ]
 
                 logger = logging.getLogger(__name__)
                 logger.setLevel(logging.DEBUG)
@@ -52,7 +47,9 @@ if __name__ == "__main__":
                 net.broadcastMessage(KokuMessageType.GET_TRANSACTION, [])
 
                 net.waiting_for_transactions = True
-                while net.waiting_for_transactions and len(net.getFreshBlockChain()) == 1:
+                while net.waiting_for_transactions or len(net.getFreshBlockChain()) < 2:
+                    print('waiting', net.waiting_for_transactions)
+                    print(len(net.getFreshBlockChain()))
                     time.sleep(1)
 
                 trans = net.transactions
