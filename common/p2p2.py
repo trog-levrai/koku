@@ -176,7 +176,7 @@ class KokuNetwork():
                 trans = kokuStruct.data
                 self.logging.info("TRANSACTION")
                 self.logging.info(trans)
-                if len(trans) > len(self.transaction):
+                if len(trans) > len(self.transactions):
                     self.transactions = trans
                 self.waiting_for_transactions = False
 
