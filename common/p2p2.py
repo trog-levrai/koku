@@ -211,9 +211,9 @@ class KokuNetwork():
                         self.logging.info('Invalid chain has been received and droped')
                     else:
                         self.chain = chainFromLast
-                    with open('/tmp/.koku.chain', 'wb') as f:
-                        dump = pickle.dumps(self.chain)
-                        f.write(dump)
+                        with open('/tmp/.koku.chain', 'wb') as f:
+                            dump = pickle.dumps(self.chain)
+                            f.write(dump)
 
         except Exception as inst:
             self.logging.exception('handleKokuProtocol: ')
