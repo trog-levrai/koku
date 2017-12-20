@@ -37,6 +37,7 @@ class cpu_miner:
                 if int_miner:
                     self.interrupt()
                     net.resetInteruptMiner()
+                    self.not_interrupted = True
                     return (self.block, False)
 
                 for j, v in enumerate(val):
