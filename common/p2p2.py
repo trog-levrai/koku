@@ -167,7 +167,7 @@ class KokuNetwork():
             self.logging.info('KokuStruct data : ' + str(kokuStruct.data))
 
             if msgType == KokuMessageType.GET_ADDR:
-                self.broadcastMessage(KokuMessageType.ADDR, [])
+                self.broadcastMessage(KokuMessageType.ADDR, self.knownPeers)
                 self.logging.info("GET_ADDR")
             if msgType == KokuMessageType.ADDR:
                 for peer in kokuStruct.data:
