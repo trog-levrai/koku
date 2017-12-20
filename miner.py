@@ -76,6 +76,9 @@ def main():
         try:
             print_chain(logger, chain)
             transactions = getInitTransactions(vk, sk)
+            for t in net.transactions_queue:
+                transactions.append(t)
+            net.transactions_queue = []
             newBlock = Block(chain[-1].getHash(), b'', len(chain))
             newBlock.setTransactions(transactions)
             newBlock.setDifficulty(getDifficulty(chain))
