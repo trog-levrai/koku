@@ -147,12 +147,10 @@ class KokuNetwork():
         self.removePeer(clientaddr)
 
     def interuptMiner(self):
-        self.logging.info('Interupting miner...')
         self.interupt = True
 
     def getInteruptMiner(self):
         interupt = self.interupt
-        self.logging.info('Get Interupt')
         return interupt
 
     def resetInteruptMiner(self):
