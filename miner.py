@@ -95,7 +95,7 @@ def main():
             else:
                 chain.append(nounce)
                 logger.info('Found block #' + str(len(chain)))
-                net.setBlockChain(chain)
+                #net.setBlockChain(chain)
                 net.transactions[nounce.id] = nounce.transactions
                 net.broadcastMessage(KokuMessageType.FROM_LAST, chain)
                 with open('/tmp/.koku.chain', 'wb') as f:

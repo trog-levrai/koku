@@ -67,6 +67,7 @@ if __name__ == "__main__":
                     logger.error('You don\'t have enough money...')
                     sys.exit(1)
 
+                print(amount, amout - int(args.amount))
                 tr = Transaction(int(args.amount), amount - int(args.amount), args.dest, vk)
                 sig = sk.sign(tr.getPack(True))
                 tr.setSig(sig)
