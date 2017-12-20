@@ -42,3 +42,6 @@ class Transaction:
             return True
         except ecdsa.BadSignatureError:
             return False
+
+    def print(self):
+        print('amount', self.amount, 'dest', self.dest)

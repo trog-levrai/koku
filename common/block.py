@@ -39,9 +39,11 @@ class Block:
         last = False
         total = 0
         for t in self.transactions:
-            if t.dest == addr and t.checkSig():
+            if t.dest == str.encode(addr) and t.checkSig():
+                print('1')
                 total += t.amount
-            elif t.sender == addr and t.checkSig():
+            elif t.sender == str.encode(addr):
+                print('2')
                 total += t.utxo
                 last = True
         print(last, total)
@@ -93,7 +95,7 @@ def getAmountAvailable(addr, chain):
     ans = 0
     last = False
     while i < len(rev) and not last:
-        last, amount = rev[i].getIncome(rev[i])
+        last, amount = rev[i].getIncome(addr)
         ans += amount
         i += 1
     return ans
