@@ -39,15 +39,6 @@ def getInitTransactions(vk, sk):
     #We don't sign it bc no signature is needed
     return [tr]
 
-def getDifficulty(chain):
-    #if len(chain) < 2:
-    #    return 2 ** 8
-    #delta = chain[-1].getTime() - chain[-2].getTime()
-    #prevDifficulty = chain[-1].getDifficulty()
-    #return int(prevDifficulty * delta / 15.)
-    return 2**8
-
-
 def main():
 
     try:
