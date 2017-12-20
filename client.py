@@ -62,6 +62,7 @@ if __name__ == "__main__":
                 for b in chain:
                     b.setTransactions(trans[b.id])
                 amount = getAmountAvailable(getAddr(vk), chain)
+                print('Amount', str(amount))
                 #if amount - int(args.amount) < 0:
                 #    logger.error('You don\'t have enough money...')
                 #    sys.exit(1)

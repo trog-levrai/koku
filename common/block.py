@@ -38,15 +38,18 @@ class Block:
     def getIncome(self, addr):
         last = False
         total = 0
+        print('len', len(self.transactions))
         for t in self.transactions:
-            if t.dest == str.encode(addr) and t.checkSig():
-                print('1')
+            print(t.dest, t.sender)
+            print(str.encode(addr))
+            if t.dest == str.encode(addr):
                 total += t.amount
+                print('1', t.amount)
             elif t.sender == str.encode(addr):
-                print('2')
                 total += t.utxo
+                print('2', t.utxo)
                 last = True
-        print(last, total)
+            print(total)
         return (last, total)
 
     def getPack(self):
