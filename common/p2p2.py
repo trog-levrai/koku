@@ -5,6 +5,7 @@ import time
 import pickle
 import struct
 from enum import Enum
+from common.block import checkChain
 
 class KokuNetworkPeerType(Enum):
     MINER = 1
@@ -206,7 +207,10 @@ class KokuNetwork():
                 if len(chainFromLast) > 0 and len(chainFromLast) > len(self.chain):
                     if self.type == KokuNetworkPeerType.MINER:
                         self.interuptMiner()
-                    self.chain = chainFromLast
+                    if not checkChain(chainFromLast):
+                        self.logging.info('Invalid chain has been received and droped')
+                    else:
+                        self.chain = chainFromLast
                     with open('/tmp/.koku.chain', 'wb') as f:
                         dump = pickle.dumps(self.chain)
                         f.write(dump)
