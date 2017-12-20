@@ -40,7 +40,7 @@ def getInitTransactions(vk, sk):
 
 def getDifficulty(chain):
     if len(chain) < 2:
-        return 2 ** 11
+        return 2 ** 8
     delta = chain[-1].getTime() - chain[-2].getTime()
     prevDifficulty = chain[-1].getDifficulty()
     return int(prevDifficulty * delta / 15.)
@@ -83,12 +83,13 @@ def main():
             newBlock = Block(chain[-1].getHash(), b'', len(chain))
             newBlock.setTransactions(transactions)
             newBlock.setDifficulty(getDifficulty(chain))
-            logger.info('Difficulty is now ' + str(getDifficulty(chain)))
+            logger.info('Probability of finding block is now of ' + str(getDifficulty(chain)) + '  / 2^32')
 
             miner.set_block(newBlock)
             fresh_chain = net.getFreshBlockChain()
             nounce, fresh = miner.compute_hashes(net)
             if len(fresh_chain) > len(chain):
+                logger.info('Found block #' + str(len(chain)))
                 chain = fresh_chain
             else:
                 chain.append(nounce)
