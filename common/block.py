@@ -81,7 +81,7 @@ def checkChain(logger, chain):
         h = chain[i].getHash()
         val = int.from_bytes(h[:4], byteorder='little', signed=False)
         if val >= chain[i].difficulty or chain[i].difficulty != getDifficulty(chain[:i]):
-            logger.info('val : ' + val + ' diff : ' + chain[i].difficulty + ' getDiff : ' + getDifficulty(chain[:i]))
+            logger.info('val : ' + str(val) + ' diff : ' + str(chain[i].difficulty) + ' getDiff : ' + str(getDifficulty(chain[:i])))
             return False
     return True
 
