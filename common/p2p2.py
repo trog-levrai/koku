@@ -83,13 +83,19 @@ class KokuNetwork():
     def broadcastMessage(self, type, msg):
         if self.serverStatus == 0:
           return
-        koku = KokuStruct()
-        koku.data = msg
-        koku.type = type
-        data = pickle.dumps(koku)
-        for client in self.peersSoc.values():
-            self.logging.info('Sent data to ' + str(client) + ': ' + str(data))
-            self.send_msg(client, data)
+
+        try:
+            koku = KokuStruct()
+            koku.data = msg
+            koku.type = type
+            data = pickle.dumps(koku)
+            for client in self.peersSoc.values():
+                self.logging.info('Sent data to ' + str(client) + ': ' + str(len(data)))
+                self.send_msg(client, data)
+        except Exception as inst:
+            self.logging.error("BroadCastMessage")
+            self.logging.error(type(inst))
+            self.logging.error((inst.args))
 
     def getFreshBlockChain(self):
         return self.chain
@@ -151,7 +157,7 @@ class KokuNetwork():
 
     def handleKokuProtocol(self, data):
         try:
-            self.logging.info('--Received data ' + str(data))
+            self.logging.info('--Received data ' + str(len(data)))
             kokuStruct = pickle.loads(data)
             msgType = kokuStruct.type
             self.logging.info('KokuStruct type : ' + str(kokuStruct.type))
