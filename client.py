@@ -55,6 +55,7 @@ if __name__ == "__main__":
                 trans = net.transactions
 
                 vk = sk.get_verifying_key()
+                chain = net.getFreshBlockChain()
 
                 for b in chain:
                     b.setTransactions(trans[b.id])

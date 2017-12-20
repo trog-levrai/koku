@@ -44,6 +44,7 @@ class Block:
             elif t.sender == addr and t.checkSig():
                 total += t.utxo
                 last = True
+        print(last, total)
         return (last, total)
 
     def getPack(self):

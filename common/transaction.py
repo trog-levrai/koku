@@ -16,12 +16,6 @@ class Transaction:
 
     def getPack(self, sig=False):
         if sig:
-            print('amount', self.amount)
-            print('utxo', self.utxo)
-            print('time', self.time)
-            print('pubkey', len(self.pubKey))
-            print('sender', len(self.sender))
-            print('amount', len(self.dest))
             return struct.pack('3I64p44p44p', self.amount, self.utxo, self.time,
                     self.pubKey, self.sender, self.dest)
         return struct.pack('3I64p44p44p64p', self.amount, self.utxo, self.time,
