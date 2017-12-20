@@ -34,6 +34,7 @@ class KokuNetwork():
         self.type = typ #client / miner
         self.logging = logging # Logging configuration
         self.chain = chain
+        self.interupt = False
         self.configFilename = configFilename
         self.knownPeers = set()
         self.peersSoc = {}
