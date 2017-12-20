@@ -176,7 +176,8 @@ class KokuNetwork():
                 trans = kokuStruct.data
                 self.logging.info("TRANSACTION")
                 self.logging.info(trans)
-                self.transactions += trans
+                if len(trans) > len(self.transaction):
+                    self.transactions = trans
                 self.waiting_for_transactions = False
 
             if msgType == KokuMessageType.GET_TRANSACTION:
