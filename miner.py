@@ -90,11 +90,12 @@ def main():
             fresh_chain = net.getFreshBlockChain()
             nounce, fresh = miner.compute_hashes(net)
             if len(fresh_chain) > len(chain):
-                logger.info('Found block #' + str(len(chain)))
                 chain = fresh_chain
                 net.broadcastMessage(KokuMessageType.GET_TRANSACTION, [])
             else:
                 chain.append(nounce)
+                logger.info('Found block #' + str(len(chain)))
+                net.setBlockChain(chain)
                 net.transactions[nounce.id] = nounce.transactions
                 net.broadcastMessage(KokuMessageType.FROM_LAST, chain)
                 with open('/tmp/.koku.chain', 'wb') as f:
