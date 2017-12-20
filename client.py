@@ -52,7 +52,7 @@ if __name__ == "__main__":
                 net.broadcastMessage(KokuMessageType.GET_TRANSACTION, [])
 
                 net.waiting_for_transactions = True
-                while net.waiting_for_transactions and len(net.getFreshBlockChain()) == 1:
+                while net.waiting_for_transactions or len(net.getFreshBlockChain()) < 2:
                     time.sleep(1)
 
                 trans = net.transactions

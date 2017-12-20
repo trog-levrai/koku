@@ -93,6 +93,7 @@ class KokuNetwork():
             data = pickle.dumps(koku)
             for client in self.peersSoc.values():
                 self.logging.info('Sent data to ' + str(client) + ': ' + str(len(data)))
+                self.logging.info('Sending to ' + str(client.getsockname()) + ' ' + str(client.getpeername()))
                 self.send_msg(client, data)
         except Exception as inst:
             self.logging.error("BroadCastMessage")
@@ -225,8 +226,7 @@ class KokuNetwork():
 
     def addPeer(self, peerSoc, peerIp):
         self.knownPeers.add(peerIp)
-        if not peerIp in self.peersSoc:
-            self.peersSoc[peerIp] = peerSoc
+        self.peersSoc[peerIp] = peerSoc
 
     def addPeerAndConnect(self, peerIp, peerPort = 55555):
         self.logging.info('Fetching new peer: ' + peerIp)
