@@ -8,6 +8,7 @@ import logging
 from base58 import b58encode
 from common.address import *
 from common.block import Block
+from common.block import getDifficulty
 from daemonize import Daemonize
 from optparse import OptionParser
 from common.p2p2 import KokuStruct

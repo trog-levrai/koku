@@ -77,13 +77,11 @@ class Block:
         self.time = int(time.time())
 
 def checkChain(chain):
-    prev = None
-    for b in chain:
-        if not prev is None and prev != b.prev:
+    for i in range(len(chain))[::-1]:
+        h = chain[i].getHash()
+        val = int.from_bytes(h[:4], byteorder='little', signed=False)
+        if val >= chain[i].difficulty or chain[i].difficulty != getDifficulty(chain[:i]):
             return False
-        m = hashlib.sha256()
-        m.update(b.getPack())
-        prev = m.digest()
     return True
 
 def getAmountAvailable(addr, chain):
@@ -96,3 +94,11 @@ def getAmountAvailable(addr, chain):
         ans += amount
         i += 1
     return ans
+
+def getDifficulty(chain):
+    return 2**8
+    if len(chain) < 2:
+        return 2 ** 8
+    delta = chain[-1].getTime() - chain[-2].getTime()
+    prevDifficulty = chain[-1].getDifficulty()
+    return int(prevDifficulty * delta / 15.)
