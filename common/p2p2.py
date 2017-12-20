@@ -175,10 +175,10 @@ class KokuNetwork():
 
             if msgType == KokuMessageType.TRANSACTION:
                 trans = kokuStruct.data
-                self.transactions = trans
-                self.waiting_for_transactions = False
                 self.logging.info("TRANSACTION")
-                self.logging.info(type(trans))
+                self.logging.info(trans)
+                self.transactions += trans
+                self.waiting_for_transactions = False
 
             if msgType == KokuMessageType.GET_TRANSACTION:
                 self.broadcastMessage(KokuMessageType.TRANSACTION, self.transactions)
