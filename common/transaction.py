@@ -16,10 +16,13 @@ class Transaction:
 
     def getPack(self, sig=False):
         if sig:
+            print('pubkey', len(self.pubkey))
+            print('sender', len(self.sender))
+            print('amount', len(self.dest))
             return struct.pack('3I64p44p44p', self.amount, self.utxo, self.time,
                     self.pubKey, self.sender, self.dest)
-        return struct.pack('3I64p44p64p44p', self.amount, self.utxo, self.time,
-                self.pubKey, self.sender, self.sig, self.dest)
+        return struct.pack('3I64p44p44p64p', self.amount, self.utxo, self.time,
+                self.pubKey, self.sender, self.dest, self.sig)
 
 
     def unpack(self, buff):
@@ -31,7 +34,7 @@ class Transaction:
         (self.sender, ), data = struct.unpack('44p', data[:44]), data[44:]
         (self.sig, ), data = struct.unpack('64p', data[:64]), data[64:]
         (self.dest, ), data = struct.unpack('44p', data[:44]), data[44:]
-    
+
     def setSig(self, sig):
         self.sig = sig
 
