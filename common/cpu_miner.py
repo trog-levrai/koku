@@ -18,7 +18,6 @@ class cpu_miner:
 
     def interrupt(self):
         self.not_interrupted = False
-        self.logging.info('Interrupted batch')
 
     def compute_hashes(self, net):
         i = 0
@@ -33,7 +32,6 @@ class cpu_miner:
                 for v in vals:
                     val += v
                 int_miner = net.getInteruptMiner()
-                self.logging.info('int ' + str(int_miner))
                 if int_miner:
                     self.interrupt()
                     net.resetInteruptMiner()
