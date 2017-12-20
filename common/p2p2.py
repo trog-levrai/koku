@@ -187,7 +187,7 @@ class KokuNetwork():
 
             if self.type == KokuNetworkPeerType.MINER:
                 if msgType == KokuMessageType.ACKNOWLEDGE_TRANSACTION:
-                    trans = KokuStruct.data
+                    trans = kokuStruct.data
                     self.transactions_queue.append(trans)
                     self.logging.info("ACKNOWLEDGE_TRANSACTION")
 

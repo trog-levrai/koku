@@ -7,7 +7,7 @@ class Transaction:
 
     def __init__(self, amount, utxo, dest, pubKey):
         self.amount = amount
-        self.utxo = utxo
+        self.utxo = 0
         self.time = int(round(time.time()))
         self.pubKey = pubKey.to_string()
         self.sender = str.encode(getAddr(pubKey))
@@ -16,7 +16,10 @@ class Transaction:
 
     def getPack(self, sig=False):
         if sig:
-            print('pubkey', len(self.pubkey))
+            print('amount', self.amount)
+            print('utxo', self.utxo)
+            print('time', self.time)
+            print('pubkey', len(self.pubKey))
             print('sender', len(self.sender))
             print('amount', len(self.dest))
             return struct.pack('3I64p44p44p', self.amount, self.utxo, self.time,
