@@ -97,8 +97,8 @@ def getAmountAvailable(addr, chain):
 
 def getDifficulty(chain):
     #return 2**8
-    if len(chain) < 2:
-        return 2 ** 8
-    delta = chain[-1].getTime() - chain[-2].getTime()
+    if len(chain) < 5:
+        return 2 ** 10
+    delta = chain[-1].getTime() - chain[-5].getTime()
     prevDifficulty = chain[-1].getDifficulty()
-    return int(prevDifficulty * delta / 15.)
+    return int(prevDifficulty * delta / 75.)
