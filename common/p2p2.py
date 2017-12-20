@@ -202,10 +202,10 @@ class KokuNetwork():
             if msgType == KokuMessageType.FROM_LAST:
                 self.logging.info("FROM LAST")
                 chainFromLast = kokuStruct.data
-                if self.type == KokuNetworkPeerType.MINER:
-                    self.interuptMiner()
                 self.logging.info('Block chain len ' + str(len(self.chain)) + 'received ' + str(len(chainFromLast)))
                 if len(chainFromLast) > 0 and len(chainFromLast) > len(self.chain):
+                    if self.type == KokuNetworkPeerType.MINER:
+                        self.interuptMiner()
                     self.chain = chainFromLast
                     with open('/tmp/.koku.chain', 'wb') as f:
                         dump = pickle.dumps(self.chain)
