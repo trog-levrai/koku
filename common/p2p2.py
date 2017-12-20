@@ -185,33 +185,33 @@ class KokuNetwork():
                 self.broadcastMessage(KokuMessageType.TRANSACTION, self.transactions)
                 self.logging.info("GET_TRANSACTION")
 
-            if msgType == KokuMessageType.FROM_LAST:
-                self.logging.info("FROM LAST")
-                chainFromLast = kokuStruct.data
-                self.logging.info('Block chain len ' + str(len(self.chain)) + 'received ' + str(len(chainFromLast)))
-                if len(chainFromLast) > 0 and len(chainFromLast) > len(self.chain):
-                  self.chain = chainFromLast
-                  with open('/tmp/.koku.chain', 'wb') as f:
-                      dump = pickle.dumps(self.chain)
-                      f.write(dump)
 
             if self.type == KokuNetworkPeerType.MINER:
                 if msgType == KokuMessageType.ACKNOWLEDGE_TRANSACTION:
                     trans = KokuStruct.data
                     self.transactions_queue.append(trans)
                     self.logging.info("ACKNOWLEDGE_TRANSACTION")
-                if msgType == KokuMessageType.GET_FROM_LAST:
-                    self.logging.info("GET FROM LAST")
-                    chainLen = kokuStruct.data
-                    if len(self.chain) < chainLen:
-                        self.broadcastMessage(KokuMessageType.FROM_LAST, [])
-                        self.broadcastMessage(KokuMessageType.GET_FROM_LAST, len(self.chain))
-                    else:
-                        self.broadcastMessage(KokuMessageType.FROM_LAST, self.chain)
-                if msgType == KokuMessageType.FROM_LAST:
-                    chainFromLast = kokuStruct.data
-                    if len(chainFromLast) > len(self.chain):
-                        self.interuptMiner()
+
+            if msgType == KokuMessageType.GET_FROM_LAST:
+                self.logging.info("GET FROM LAST")
+                chainLen = kokuStruct.data
+                if len(self.chain) < chainLen:
+                    self.broadcastMessage(KokuMessageType.FROM_LAST, [])
+                    self.broadcastMessage(KokuMessageType.GET_FROM_LAST, len(self.chain))
+                else:
+                    self.broadcastMessage(KokuMessageType.FROM_LAST, self.chain)
+
+            if msgType == KokuMessageType.FROM_LAST:
+                self.logging.info("FROM LAST")
+                chainFromLast = kokuStruct.data
+                if self.type == KokuNetworkPeerType.MINER:
+                    self.interuptMiner()
+                self.logging.info('Block chain len ' + str(len(self.chain)) + 'received ' + str(len(chainFromLast)))
+                if len(chainFromLast) > 0 and len(chainFromLast) > len(self.chain):
+                    self.chain = chainFromLast
+                    with open('/tmp/.koku.chain', 'wb') as f:
+                        dump = pickle.dumps(self.chain)
+                        f.write(dump)
 
         except Exception as inst:
             self.logging.exception('handleKokuProtocol: ')

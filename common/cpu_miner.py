@@ -32,7 +32,9 @@ class cpu_miner:
                 val = []
                 for v in vals:
                     val += v
-                if net.getInteruptMiner():
+                int_miner = net.getInteruptMiner()
+                self.logging.info('int ' + str(int_miner))
+                if int_miner:
                     self.interrupt()
                     net.resetInteruptMiner()
                     return (self.block, False)
