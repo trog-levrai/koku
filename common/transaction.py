@@ -7,7 +7,7 @@ class Transaction:
 
     def __init__(self, amount, utxo, dest, pubKey):
         self.amount = amount
-        self.utxo = 5
+        self.utxo = 0
         self.time = int(round(time.time()))
         self.pubKey = pubKey.to_string()
         self.sender = str.encode(getAddr(pubKey))
