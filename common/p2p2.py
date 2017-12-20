@@ -149,8 +149,9 @@ class KokuNetwork():
         self.interupt = True
 
     def getInteruptMiner(self):
+        interupt = self.interupt
         self.resetInteruptMiner()
-        return self.interupt
+        return interupt
 
     def resetInteruptMiner(self):
         self.interupt = False
