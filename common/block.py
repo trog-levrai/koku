@@ -57,9 +57,11 @@ class Block:
         self.bits = obj[1]
         self.pad = obj[2]
 
-    def getHash(self):
+    def getHash(self, nounce = 0):
+        self.pad += nounce
         m = hashlib.sha256()
         m.update(self.getPack())
+        self.pad -= nounce
         return m.digest()
 
     def setDifficulty(self, difficulty):

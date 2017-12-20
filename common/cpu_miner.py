@@ -1,8 +1,9 @@
 from multiprocessing import Pool
 from copy import copy
+import common.block
 import logging
 import hashlib
-import common.block
+import os
 
 class cpu_miner:
 
@@ -21,11 +22,16 @@ class cpu_miner:
 
     def compute_hashes(self, net):
         i = 0
+        length = int(self.batch / os.cpu_count())
         while self.not_interrupted:
             self.logging.info('Starting batch ' + str(i))
             self.block.updateTime()
             with Pool(None) as p:
-                val = p.map(try_pad, [(copy(self.block), x) for x in range(i * self.batch, (i + 1) * self.batch)])
+                self.block.pad = i * self.batch
+                vals = p.map(try_pad, [(copy(self.block), i * length, length) for i in range(os.cpu_count())])
+                val = []
+                for v in vals:
+                    val += v
                 if net.getInteruptMiner():
                     self.interrupt()
                     return (self.block, False)
@@ -40,8 +46,9 @@ class cpu_miner:
         return (self.block, False)
 
 def try_pad(arg):
-    block, pad = arg
-    block.pad = pad
-    m = hashlib.sha256(block.getPack()).digest()
-    value = int.from_bytes(m[:4], byteorder='little', signed=False)
-    return value
+    block, begin, length = arg
+    ans = []
+    for i in range(length):
+        m = block.getHash(begin + i)
+        ans.append(int.from_bytes(m[:4], byteorder='little', signed=False))
+    return ans
