@@ -147,11 +147,12 @@ class KokuNetwork():
         self.removePeer(clientaddr)
 
     def interuptMiner(self):
+        self.logging.info('Interupting miner...')
         self.interupt = True
 
     def getInteruptMiner(self):
         interupt = self.interupt
-        self.resetInteruptMiner()
+        self.logging.info('Get Interupt')
         return interupt
 
     def resetInteruptMiner(self):
@@ -209,7 +210,7 @@ class KokuNetwork():
                         self.broadcastMessage(KokuMessageType.FROM_LAST, self.chain)
                 if msgType == KokuMessageType.FROM_LAST:
                     chainFromLast = kokuStruct.data
-                    if len(chainFromLast) > 0 and len(chainFromLast) > len(self.chain):
+                    if len(chainFromLast) > len(self.chain):
                         self.interuptMiner()
 
         except Exception as inst:

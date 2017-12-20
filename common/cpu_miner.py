@@ -34,6 +34,7 @@ class cpu_miner:
                     val += v
                 if net.getInteruptMiner():
                     self.interrupt()
+                    net.resetInteruptMiner()
                     return (self.block, False)
 
                 for j, v in enumerate(val):

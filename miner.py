@@ -89,7 +89,7 @@ def main():
             fresh_chain = net.getFreshBlockChain()
             nounce, fresh = miner.compute_hashes(net)
             if len(fresh_chain) > len(chain):
-                logger.log('Found block #' + str(len(chain)))
+                logger.info('Found block #' + str(len(chain)))
                 chain = fresh_chain
             else:
                 chain.append(nounce)
