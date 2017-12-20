@@ -92,6 +92,7 @@ def main():
             if len(fresh_chain) > len(chain):
                 logger.info('Found block #' + str(len(chain)))
                 chain = fresh_chain
+                net.broadcastMessage(KokuMessageType.GET_TRANSACTION, [])
             else:
                 chain.append(nounce)
                 net.transactions[nounce.id] = nounce.transactions
