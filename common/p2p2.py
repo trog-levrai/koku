@@ -95,8 +95,6 @@ class KokuNetwork():
                 self.send_msg(client, data)
         except Exception as inst:
             self.logging.error("BroadCastMessage")
-            self.logging.error(type(inst))
-            self.logging.error((inst.args))
 
     def getFreshBlockChain(self):
         return self.chain
